@@ -454,12 +454,13 @@ export class ZenLibrary extends MozLitElement {
 
     const spaces = gZenWorkspaces.getWorkspaces();
     const current = gZenWorkspaces.getActiveWorkspaceFromCache();
+    const wrapAroundEnabled = Services.prefs.getBoolPref("zen.workspaces.wrap-around-navigation");
     const libraryEnabled = Services.prefs.getBoolPref("zen.library.enabled");
     const libraryOnRight = this.libraryOnRight;
 
     lib.#readySwipeLibrary =
       spaces.indexOf(current) === (libraryOnRight ? spaces.length - 1 : 0) &&
-      libraryEnabled;
+      libraryEnabled && !wrapAroundEnabled;
     return lib.#readySwipeLibrary;
   }
 

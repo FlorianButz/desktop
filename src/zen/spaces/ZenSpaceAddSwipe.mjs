@@ -102,11 +102,12 @@ class nsZenSpaceAddSwipe extends nsZenDOMOperatedFeature {
     const spaces = gZenWorkspaces.getWorkspaces();
     const current = gZenWorkspaces.getActiveWorkspaceFromCache();
     const libraryEnabled = Services.prefs.getBoolPref("zen.library.enabled");
+    const wrapAroundEnabled = Services.prefs.getBoolPref("zen.workspaces.wrap-around-navigation");
     const libraryOnRight = lazy.ZenLibrary.libraryOnRight;
 
     this.#readySwipeAdd =
       spaces.indexOf(current) === (libraryOnRight ? 0 : spaces.length - 1) &&
-      libraryEnabled;
+      libraryEnabled && !wrapAroundEnabled;
     return this.#readySwipeAdd;
   }
 
