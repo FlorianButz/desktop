@@ -24,6 +24,7 @@ export class ZenSpacesSwipe {
     lastDelta: 0,
     direction: null,
     isSwipingLibrary: false,
+    isSwipingToAddSpace: 0,
   };
 
   constructor() {
@@ -164,12 +165,14 @@ export class ZenSpacesSwipe {
 
     gZenFolders.cancelPopupTimer();
 
-    lazy.ZenLibrary.clearReadySwipeLibraryCache();
 
     this.#toggleSwipeGestureAttr(true);
     document.addEventListener("popupshown", this._popupOpenHandler, {
       once: true,
     });
+
+    lazy.ZenLibrary.clearReadySwipeLibraryCache();
+    window.gZenSpaceAddSwipe.clearReadySwipeLibraryCache();
 
     event.preventDefault();
     event.stopPropagation();
@@ -178,6 +181,7 @@ export class ZenSpacesSwipe {
       lastDelta: 0,
       direction: null,
       isSwipingLibrary: false,
+      isSwipingToAddSpace: false,
     };
     Services.prefs.setBoolPref("zen.swipe.is-fast-swipe", true);
   }
@@ -217,6 +221,8 @@ export class ZenSpacesSwipe {
       this._swipeState.direction = delta > 0 ? "left" : "right";
     }
 
+    /* Library */
+
     const currentWorkspace = ws.getActiveWorkspaceFromCache();
 
     const libraryOnRight = lazy.ZenLibrary.libraryOnRight;
@@ -241,6 +247,25 @@ export class ZenSpacesSwipe {
     }
     lazy.ZenLibrary.swipeReset();
 
+    /* Spaces (+) */
+
+    const wantsAddSpace =
+      (!libraryOnRight ? translateX < 0 : translateX > 0) &&
+      window.gZenSpaceAddSwipe.readySwipeAddSpace();
+
+    if (wantsAddSpace || this._swipeState.isSwipingToAddSpace) {
+      if (!this._swipeState.isSwipingToAddSpace) {
+        this._swipeState.isSwipingToAddSpace = true;
+        window.gZenSpaceAddSwipe.startSwipe();
+      }
+
+      const rawProgress = translateX / stripWidth;
+      window.gZenSpaceAddSwipe.swipeProgress(rawProgress);
+
+      return;
+    }
+    window.gZenSpaceAddSwipe.swipeReset();
+
     // Apply a translateX to the tab strip to give the user feedback on the swipe
     ws._organizeWorkspaceStripLocations(currentWorkspace, true, translateX);
   }
@@ -263,6 +288,9 @@ export class ZenSpacesSwipe {
     if (this._swipeState.isSwipingLibrary) {
       lazy.ZenLibrary.stopSwipe(rawDirection * direction);
       return;
+    } else if (this._swipeState.isSwipingToAddSpace) {
+      window.gZenSpaceAddSwipe.endSwipe();
+      return;
     }
 
     await ws.changeWorkspaceShortcut(rawDirection * direction, true);
@@ -273,6 +301,8 @@ export class ZenSpacesSwipe {
 
     if (this._swipeState.isSwipingLibrary) {
       lazy.ZenLibrary.swipeAnimationEnd();
+    } else if (this._swipeState.isSwipingToAddSpace) {
+      window.gZenSpaceAddSwipe.onSwipeAnimationEnd();
     }
 
     // Reset swipe state
@@ -281,6 +311,7 @@ export class ZenSpacesSwipe {
       lastDelta: 0,
       direction: null,
       isSwipingLibrary: false,
+      isSwipingToAddSpace: 0,
     };
 
     Services.prefs.setBoolPref("zen.swipe.is-fast-swipe", false);

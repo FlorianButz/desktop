@@ -448,7 +448,7 @@ export class ZenLibrary extends MozLitElement {
    */
   static readySwipeOpenLibrary() {
     const lib = this.getInstance();
-    if (lib.#readySwipeLibrary) {
+    if (lib.#readySwipeLibrary !== null) {
       return lib.#readySwipeLibrary;
     }
 

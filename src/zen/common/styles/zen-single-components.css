@@ -813,3 +813,126 @@
 
 %include zen-library-widget.css
 %include zen-library-media-preview.css
+
+.zen-swipe-add-space-container {
+  position: absolute;
+  height: 100%;
+  width: 100px;
+  right: 0;
+  translate: 100px 0;
+
+  :root[zen-right-side="true"] & {
+    left: 0px;
+    right:  unset;
+    translate: -100px 0;
+  }
+}
+
+.zen-swipe-add-space-background {
+  right: -50px;
+  height: 100%;
+  position: absolute;
+  width: 200px;
+
+  background: radial-gradient(circle at right, 
+    #fffa 0%,
+    transparent 30%);
+  background-position-y: center;
+  transform-origin: right;
+  z-index: -1;
+
+  :root[zen-right-side="true"] & {
+    left: -50px;
+    right: unset;
+    
+    background: radial-gradient(circle at left, 
+      #fffa 0%,
+      transparent 30%);
+    transform-origin: left;
+  }
+}
+
+@property --thickness {
+  syntax: '<length-percentage>';
+  initial-value: 20%;
+  inherits: true;
+}
+
+.zen-swipe-add-space-progress-badge {
+  position: absolute;
+  width: 32px;
+  aspect-ratio: 1;
+
+  --thickness: 16%;
+  transition: --thickness 0.2s ease-out;
+
+  --progress: white;
+  --background: color-mix(var(--zen-primary-color), white 15%);
+  
+  right: 10px;
+  top: 50%;
+  translate: 0 -50%;
+ 
+  border-radius: 100%;
+  /* stylelint-disable-next-line property-no-unknown */
+  corner-shape: round;
+
+  background: var(--background);
+  
+  box-shadow: 0px 1px 8px #0005;
+  
+  & .zen-swipe-add-space-icon {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+
+    background: url("chrome://browser/skin/zen-icons/plus.svg") center / 55% no-repeat;
+    -moz-context-properties: fill;
+    fill: white;
+  }
+
+  &::after {
+    content: ''; 
+    display: block;
+    position: relative;
+    z-index: -1;
+    
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    
+    background:
+    conic-gradient(
+        from 0deg,
+        var(--background) calc(100% - var(--value) * 1%),
+        var(--progress) calc(100% - var(--value) * 1%)
+      )
+      border-box,
+    var(--border-color) border-box;
+
+    mask: radial-gradient(
+      circle closest-side,
+      transparent calc(100% - var(--thickness)),
+      black calc(100% - var(--thickness))
+    );
+  }
+
+  :root[zen-right-side="true"] & {
+    right: unset;
+    left: 10px;
+  }
+}
+
+.zen-swipe-add-space-container[readytoadd] {
+  & .zen-swipe-add-space-progress-badge {
+    --thickness: 100%;
+    transform-origin: center;
+    animation: zen-swipe-add-icon-jump 0.275s ease-out;
+  }
+  
+  & .zen-swipe-add-space-icon {
+    fill: var(--zen-primary-color) !important;
+  }
+}
