@@ -165,7 +165,6 @@ export class ZenSpacesSwipe {
 
     gZenFolders.cancelPopupTimer();
 
-
     this.#toggleSwipeGestureAttr(true);
     document.addEventListener("popupshown", this._popupOpenHandler, {
       once: true,

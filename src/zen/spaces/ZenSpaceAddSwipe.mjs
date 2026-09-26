@@ -22,17 +22,15 @@ class nsZenSpaceAddSwipe extends nsZenDOMOperatedFeature {
   #springControls = null;
   #isAnimatingBack = false;
 
-  #hiddenSpaceElement = null;
-
   static CREATION_THRESHOLD = 1;
   static SPACES_TRANSLATION = -25;
-  
+
   async init() {}
-  
+
   #easeInOut(x) {
     x = Math.min(Math.max(x, 0), 1);
     return -(Math.cos(Math.PI * x) - 1) / 2;
-  };
+  }
 
   set #progress(value) {
     if (!this.#element) {
@@ -48,17 +46,14 @@ class nsZenSpaceAddSwipe extends nsZenDOMOperatedFeature {
     const rightSide = this.#tabsOnRight;
     const rightSideFactor = rightSide ? -1 : 1;
     this.#element.style.translate = `calc(100% * ${moveProgress * rightSideFactor}) 0`;
-    
-    this.#backgroundGradient.style.setProperty(
-      "scale",
-      `${value} 3`
-    );
-    this.#backgroundGradient.style.setProperty(
-      "opacity",
-      `${value}`
-    );
 
-    this.#progressBadge.style.setProperty("--value", this.#easeInOut(value) * 100);
+    this.#backgroundGradient.style.setProperty("scale", `${value} 3`);
+    this.#backgroundGradient.style.setProperty("opacity", `${value}`);
+
+    this.#progressBadge.style.setProperty(
+      "--value",
+      this.#easeInOut(value) * 100
+    );
 
     if (isNowReady || isNowUnready) {
       this.#element.toggleAttribute("readytoadd");
@@ -73,7 +68,7 @@ class nsZenSpaceAddSwipe extends nsZenDOMOperatedFeature {
       value * nsZenSpaceAddSwipe.SPACES_TRANSLATION * rightSideFactor
     );
   }
-  
+
   get #tabsOnRight() {
     return gZenVerticalTabsManager._prefsRightSide;
   }
@@ -102,12 +97,15 @@ class nsZenSpaceAddSwipe extends nsZenDOMOperatedFeature {
     const spaces = gZenWorkspaces.getWorkspaces();
     const current = gZenWorkspaces.getActiveWorkspaceFromCache();
     const libraryEnabled = Services.prefs.getBoolPref("zen.library.enabled");
-    const wrapAroundEnabled = Services.prefs.getBoolPref("zen.workspaces.wrap-around-navigation");
+    const wrapAroundEnabled = Services.prefs.getBoolPref(
+      "zen.workspaces.wrap-around-navigation"
+    );
     const libraryOnRight = lazy.ZenLibrary.libraryOnRight;
 
     this.#readySwipeAdd =
       spaces.indexOf(current) === (libraryOnRight ? 0 : spaces.length - 1) &&
-      libraryEnabled && !wrapAroundEnabled;
+      libraryEnabled &&
+      !wrapAroundEnabled;
     return this.#readySwipeAdd;
   }
 
@@ -144,7 +142,7 @@ class nsZenSpaceAddSwipe extends nsZenDOMOperatedFeature {
   /**
    * Callback for when a swipe is
    * successfully stopped. Another additional check will
-   * ensure that a specific threshold was reached before 
+   * ensure that a specific threshold was reached before
    * opening the space creation form.
    */
   endSwipe() {
@@ -225,7 +223,7 @@ class nsZenSpaceAddSwipe extends nsZenDOMOperatedFeature {
   }
 
   /**
-   * Cancels ongoing close animations to 
+   * Cancels ongoing close animations to
    * avoid conflicts during new swipe actions.
    */
   #cancelAnimateClose() {
@@ -278,22 +276,14 @@ class nsZenSpaceAddSwipe extends nsZenDOMOperatedFeature {
    * during the swipe/create space form animation
    */
   #hideNextSpaceChild() {
-    if (this.#hiddenSpaceElement) {
-      return;
-    }
-    
     // TODO: Properly hide next/previous space
   }
 
   /**
-   * Helper method for restoring the 
+   * Helper method for restoring the
    * next space's visibility
    */
   #restoreNextSpaceChild() {
-    if (!this.#hiddenSpaceElement) {
-      return;
-    }
-    
     // TODO: Restore next/previous space
   }
 
