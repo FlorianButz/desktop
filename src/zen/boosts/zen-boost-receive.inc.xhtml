@@ -1,0 +1,157 @@
+#filter substitution
+<?xml version="1.0"?>
+
+# -*- Mode: HTML -*-
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+<!DOCTYPE window>
+
+<window
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  data-l10n-id="boost-receive-window"
+  windowtype="Zen:BoostReceive"
+  customtitlebar="true"
+  id="zenBoostReceiveDialog"
+  dialogroot="true"
+>
+  <linkset>
+    <html:link rel="stylesheet" href="chrome://global/skin/commonDialog.css" />
+    <html:link
+      rel="stylesheet"
+      href="chrome://global/content/commonDialog.css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://global/skin/global.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://browser/content/zen-styles/zen-theme.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://browser/content/zen-styles/zen-boosts-share.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://browser/skin/zen-icons/icons.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://browser/content/zen-styles/zen-animations.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      type="text/css"
+      href="chrome://browser/content/zen-styles/zen-popup.css"
+    />
+    <html:link rel="localization" href="browser/zen-boosts.ftl" />
+  </linkset>
+
+  <vbox id="zen-boost-share-dialog-container" class="dialogBox">
+    <script>
+      const { nsZenBoostReceiveDialog } = ChromeUtils.importESModule(
+        "resource:///modules/zen/boosts/ZenBoostReceiveDialog.mjs",
+      );
+      window.addEventListener("load", () => {
+        const args = window.arguments?.[0] || {};
+        window.shareDialog = new nsZenBoostReceiveDialog(
+          document,
+          window,
+          args.parentWindow,
+          args.boost,
+        );
+      });
+    </script>
+
+    <hbox id="share-header">
+      <hbox id="share-header-domain-wrapper">
+        <p>Made for</p>
+        <b id="boost-target-domain"></b>
+      </hbox>
+    </hbox>
+    <vbox id="share-top-section">
+      <hbox id="share-info">
+        <html:img
+          src="https://static.vecteezy.com/system/resources/thumbnails/018/930/572/small_2x/youtube-logo-youtube-icon-transparent-free-png.png"
+          id="favicon"
+        ></html:img>
+
+        <vbox id="share-info-inputs">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="signature-svg"
+            viewBox="0 0 386 210"
+          >
+            <!-- Will later be used to insert signature -->
+          </svg>
+          <p id="boost-name"></p>
+          <hbox id="share-info-author">
+            <i>by</i><b id="boost-author">cheffy star</b>
+          </hbox>
+        </vbox>
+
+        <button id="boost-info-button"></button>
+      </hbox>
+
+      <html:div id="share-content">
+        <html:div id="share-content-pane">
+          <vbox id="screenshot-content">
+            <html:canvas id="screenshot-canvas" />
+          </vbox>
+        </html:div>
+      </html:div>
+    </vbox>
+    <vbox id="share-footer">
+      <div id="wavy-border"></div>
+      <vbox id="footer-text">
+        <h1>Add this Boost to Zen?</h1>
+        <p>Try it on! You can always switch back from the Library.</p>
+      </vbox>
+      <hbox id="footer-buttons">
+        <button id="boost-share-close" label="Close">
+          <hbox
+            class="box-inherit button-box"
+            align="center"
+            pack="center"
+            flex="1"
+            anonid="button-box"
+            ><image class="button-icon" /><label
+              class="button-text"
+              value="Close"
+          /></hbox>
+        </button>
+        <button id="boost-share-get" label="Get Boost" default="true">
+          <hbox
+            class="box-inherit button-box"
+            align="center"
+            pack="center"
+            flex="1"
+            anonid="button-box"
+            ><image class="button-icon" /><label
+              class="button-text"
+              value="Get Boost"
+          /></hbox>
+        </button>
+      </hbox>
+    </vbox>
+
+    <popupset id="mainPopupSet">
+      <panel
+        type="arrow"
+        popupalign="centerleft"
+        id="zen-boost-share-receive-info"
+      >
+      </panel>
+    </popupset>
+  </vbox>
+</window>

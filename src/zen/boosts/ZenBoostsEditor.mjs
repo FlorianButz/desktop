@@ -93,6 +93,9 @@ export class nsZenBoostEditor {
       .getElementById("zen-boost-code")
       .addEventListener("click", this.onCodeButtonPressed.bind(this));
     this.doc
+      .getElementById("zen-boost-share")
+      .addEventListener("click", this.onShareButtonPressed.bind(this));
+    this.doc
       .getElementById("zen-boost-back")
       .addEventListener("click", this.onCodeBackButtonPressed.bind(this));
     this.doc
@@ -419,6 +422,22 @@ export class nsZenBoostEditor {
 
     // Disable picker mode
     this.disableAllPickers();
+  }
+
+  /**
+   * Handles the share button to trigger a boost share
+   */
+  onShareButtonPressed() {
+    if (!this.currentBoostData.changeWasMade) return;
+
+    this.saveBoost();
+    const boost = gZenBoostsManager.loadBoostFromStore(
+      this.boostInfo.domain,
+      this.boostInfo.id
+    );
+
+    gZenBoostsManager.shareBoost(this.openerWindow, boost);
+    // gZenBoostsManager.receiveBoost(this.openerWindow, boost);
   }
 
   async onZapButtonPressed() {

@@ -620,7 +620,7 @@ class nsZenBoostsManager {
     const width = parentWindow.outerWidth;
     const height = parentWindow.outerHeight;
     const editorWidth = 185;
-    const editorHeight = 565;
+    const editorHeight = 650;
     const pad = 20;
 
     let left = screenX + width + pad;
@@ -674,6 +674,44 @@ class nsZenBoostsManager {
     this.makeBoostActiveForDomain(domain, boost.id);
 
     return editor;
+  }
+
+   /**
+   * Will instance a new boost share dialog with the given boost
+   * 
+   * @param {Window} parentWindow - The parent window
+   * @param {object} boost - The boost
+   */
+  shareBoost(parentWindow, boost) {
+    const share = parentWindow.openDialog(
+      "chrome://browser/content/zen-components/windows/zen-boost-share.xhtml",
+      "",
+      "centerscreen,modal,dependent,resizable=no,titlebar=no",
+      { parentWindow, boost }
+    );
+
+    share.focus();
+
+    return share;
+  }
+
+   /**
+   * Will instance a new boost receive dialog with the given boost
+   * 
+   * @param {Window} parentWindow - The parent window
+   * @param {object} boost - The boost
+   */
+  receiveBoost(parentWindow, boost) {
+    const receive = parentWindow.openDialog(
+      "chrome://browser/content/zen-components/windows/zen-boost-receive.xhtml",
+      "",
+      "centerscreen,modal,dependent,resizable=no,titlebar=no",
+      { parentWindow, boost }
+    );
+    
+    receive.focus();
+
+    return receive;
   }
 
   /**

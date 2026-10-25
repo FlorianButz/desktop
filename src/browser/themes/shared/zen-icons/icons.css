@@ -41,7 +41,8 @@
 .zen-glance-sidebar-close,
 .zen-theme-picker-custom-list-item-remove,
 #appMenu-quit-button2,
-#zen-boost-delete {
+#zen-boost-delete,
+#share-button-pane-right-button[icon="remove"] {
   list-style-image: url("close.svg") !important;
 }
 
@@ -309,7 +310,8 @@
 }
 
 /* identity icons */
-#identity-icon {
+#identity-icon, 
+#boost-info-button {
   list-style-image: url("info.svg");
 }
 
@@ -426,7 +428,8 @@
 
 .panel-header > .subviewbutton-back,
 #PanelUI-zen-gradient-generator-color-page-left,
-#zen-boost-back {
+#zen-boost-back,
+#share-button-pane-left-button[icon="back"] {
   list-style-image: url("arrow-left.svg") !important;
 }
 
@@ -436,7 +439,8 @@
 
 #zen-copy-current-url-button,
 #share-tab-button,
-#zen-site-data-header-share {
+#zen-site-data-header-share,
+#zen-boost-share {
   list-style-image: url("share.svg");
 }
 
@@ -1086,4 +1090,16 @@
 
 #zen-boost-load {
   list-style-image: url("open.svg");
+}
+
+#share-button-pane-left-button[icon="check"] {
+  list-style-image: url("check.svg") !important;
+}
+
+#share-button-pane-left-button[icon="signature"] {
+  list-style-image: url("signature.svg") !important;
+}
+
+#share-button-pane-right-button[icon="menu"] {
+  list-style-image: url("menu.svg") !important;
 }

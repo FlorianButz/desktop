@@ -1,0 +1,165 @@
+#filter substitution
+<?xml version="1.0"?>
+
+# -*- Mode: HTML -*-
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+<!DOCTYPE window>
+
+<window
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  data-l10n-id="boost-share-window"
+  windowtype="Zen:BoostShare"
+  customtitlebar="true"
+  id="zenBoostShareDialog"
+  dialogroot="true"
+>
+  <linkset>
+    <html:link rel="stylesheet" href="chrome://global/skin/commonDialog.css" />
+    <html:link
+      rel="stylesheet"
+      href="chrome://global/content/commonDialog.css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://global/skin/global.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://browser/content/zen-styles/zen-theme.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://browser/content/zen-styles/zen-boosts-share.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://browser/skin/zen-icons/icons.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      href="chrome://browser/content/zen-styles/zen-animations.css"
+      type="text/css"
+    />
+    <html:link
+      rel="stylesheet"
+      type="text/css"
+      href="chrome://browser/content/zen-styles/zen-popup.css"
+    />
+    <html:link rel="localization" href="browser/zen-boosts.ftl" />
+  </linkset>
+
+  <vbox id="zen-boost-share-dialog-container" class="dialogBox">
+    <script>
+      const { nsZenBoostShareDialog } = ChromeUtils.importESModule(
+        "resource:///modules/zen/boosts/ZenBoostShareDialog.mjs",
+      );
+      window.addEventListener("load", () => {
+        const args = window.arguments?.[0] || {};
+        window.shareDialog = new nsZenBoostShareDialog(
+          document,
+          window,
+          args.parentWindow,
+          args.boost,
+        );
+      });
+    </script>
+
+    <vbox id="shared-animation">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        id="shared-animation-heart-svg"
+        style="stroke-linejoin: round; stroke-miterlimit: 2"
+        viewBox="-100 -100 904 867"
+      >
+        <path
+          d="M351.968 105.408c.003 5.521.03 5.512.032 0C405.811-9.623 565.654-4.242 637.447 78.552 732.581 167.64 688.13 339.334 627.592 417 489.014 594.786 399.896 636.064 366.608 647.146a46.9 46.9 0 0 1-29.775-.05C303.039 635.722 213.78 593.28 76.377 417c-60.538-77.665-104.99-249.361-9.856-338.448C138.315-4.24 298.157-9.623 351.968 105.408"
+        />
+      </svg>
+      <div id="shared-animation-heart-container">
+        <div id="shared-animation-heart">
+          <html:img
+            src="chrome://browser/content/zen-images/boost-share-heart.png"
+            id="shared-animation-heart"
+          ></html:img>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="shared-animation-heart-check"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="4"
+          >
+            <path d="M20 5 10 17l-4-4" />
+          </svg>
+        </div>
+      </div>
+      <p id="shared-animation-copied-link" data-l10n-id="zen-boost-shared-animation-copied-link"></p>
+    </vbox>
+    <vbox id="share-top-section">
+      <hbox id="share-info">
+        <html:img
+          src="https://static.vecteezy.com/system/resources/thumbnails/018/930/572/small_2x/youtube-logo-youtube-icon-transparent-free-png.png"
+          id="favicon"
+        ></html:img>
+
+        <vbox id="share-info-inputs">
+          <html:input
+            class="dashed"
+            id="boost-name"
+            placeholder="My Boost"
+            type="text"
+            value=""
+          ></html:input>
+          <hbox id="share-info-author">
+            <i data-l10n-id="zen-boost-share-shared-by"></i>
+            <html:input
+              id="boost-author"
+              placeholder="Anonymous"
+              type="text"
+              value=""
+            ></html:input>
+          </hbox>
+        </vbox>
+      </hbox>
+
+      <html:div id="share-content">
+        <html:div id="share-content-pane">
+          <vbox id="screenshot-content">
+            <html:canvas id="screenshot-canvas" />
+          </vbox>
+          <div id="signature-content">
+            <p data-l10n-id="zen-boost-share-scribble-text"></p>
+            <svg xmlns="http://www.w3.org/2000/svg" id="signature-svg">
+              <!-- Will later be used to insert signature -->
+            </svg>
+          </div>
+        </html:div>
+      </html:div>
+      <hbox id="share-content-pane-buttons-container">
+        <hbox id="share-content-pane-buttons">
+          <button id="share-button-pane-left-button"></button>
+          <html:div class="vertical-sep"></html:div>
+          <button id="share-button-pane-right-button"></button>
+        </hbox>
+      </hbox>
+    </vbox>
+    <vbox id="share-footer">
+      <div id="wavy-border"></div>
+      <hbox id="footer-buttons">
+        <button id="boost-share-close" data-l10n-id="zen-boost-share-close"></button>
+        <button id="boost-share-share" data-l10n-id="zen-boost-share-share" default="true"></button>
+      </hbox>
+    </vbox>
+  </vbox>
+</window>
